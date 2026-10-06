@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Recibo de Caja</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 min-h-screen py-8 px-4 flex items-center justify-center">
+
+  <div class="max-w-2xl w-full bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-white/20">
+    
+    <!-- Encabezado -->
+    <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-800 p-6 text-white text-center relative">
+      <i class="fa-solid me-2 text-3xl fa-file-invoice-dollar mb-2"></i>
+      <h1 class="text-2xl font-bold tracking-wide">Registro de Recibo de Caja</h1>
+      <p class="text-blue-100 text-sm mt-1">Formulario oficial de captura de pagos</p>
+    </div>
+
+    <!-- Formulario -->
+    <form id="formRecibo" class="p-6 md:p-8 space-y-5">
+
+      <!-- Fila 1: Consecutivo y Fecha -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">
+            <i class="fa-solid fa-hashtag text-indigo-500 me-1"></i> Consecutivo N°
+          </label>
+          <input type="text" id="consecutivo" readonly 
+            class="w-full bg-slate-100 border border-slate-300 rounded-lg px-3 py-2 text-slate-700 font-bold focus:outline-none cursor-not-allowed">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">
+            <i class="fa-solid fa-calendar-day text-indigo-500 me-1"></i> Fecha de Registro
+          </label>
+          <input type="text" id="fechaRegistro" readonly 
+            class="w-full bg-slate-100 border border-slate-300 rounded-lg px-3 py-2 text-slate-700 font-medium focus:outline-none cursor-not-allowed">
+        </div>
+      </div>
+
+      <!-- Fila 2: Pagador y Documento -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">
+            <i class="fa-solid fa-user text-indigo-500 me-1"></i> Nombre / Razón Social *
+          </label>
+          <input type="text" id="pagador" required placeholder="Ej: Carlos Morales"
+            class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">
+            <i class="fa-solid fa-id-card text-indigo-500 me-1"></i> Documento / NIT *
+          </label>
+          <input type="text" id="documento" required placeholder="Ej: 12345678"
+            class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+        </div>
+      </div>
+
+      <!-- Fila 3: Correo y Celular (Con validadores) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">
+            <i class="fa-solid fa-envelope text-indigo-500 me-1"></i> Correo Electrónico *
+          </label>
+          <input type="email" id="correo" required placeholder="ejemplo@gmail.com"
+            class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+          <p id="errCorreo" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation me-1"></i>Ingresa un correo válido (ej: usuario@gmail.com)</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">
+            <i class="fa-brands fa-whatsapp text-indigo-500 me-1"></i> Celular / WhatsApp *
+          </label>
+          <input type="tel" id="celular" required placeholder="3201234567"
+            class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+          <p id="errCelular" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation me-1"></i>El número debe tener al menos 10 dígitos numéricos</p>
+        </div>
+      </div>
+
+      <!-- Fila 4: Monto en Números y Letras -->
+      <div>
+        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">
+          <i class="fa-solid fa-sack-dollar text-indigo-500 me-1"></i> Valor a Pagar ($ COP) *
+        </label>
+        <input type="number" id="valorNumero" required placeholder="Ej: 320000" min="1"
+          class="w-full border border-slate-300 rounded-lg px-3 py-2 text-lg font-semibold text-emerald-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">
+          <i class="fa-solid fa-font text-indigo-500 me-1"></i> Valor en Letras (Automático)
+        </label>
+        <input type="text" id="valorLetras" readonly placeholder="Se calculará automáticamente..."
+          class="w-full bg-slate-100 border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-700 italic focus:outline-none cursor-not-allowed">
+      </div>
+
+      <!-- Fila 5: Concepto -->
+      <div>
+        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">
+          <i class="fa-solid fa-pen-to-square text-indigo-500 me-1"></i> Concepto / Motivo de Pago *
+        </label>
+        <textarea id="concepto" required rows="2" placeholder="Ej: Pago de cuota de administración mes de Septiembre"
+          class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"></textarea>
+      </div>
+
+      <!-- Fila 6: Adjuntar Comprobante de Pago -->
+      <div>
+        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">
+          <i class="fa-solid fa-paperclip text-indigo-500 me-1"></i> Adjuntar Soporte de Transferencia *
+        </label>
+        <input type="file" id="soporte" required accept="image/*,.pdf"
+          class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
+      </div>
+
+      <!-- Botón de Envío -->
+      <button type="submit" id="btnSubmit"
+        class="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-200 transform hover:-translate-y-0.5 flex items-center justify-center space-x-2">
+        <i class="fa-solid fa-paper-plane"></i>
+        <span> Registrar Recibo de Caja</span>
+      </button>
+
+      <!-- Alerta de Respuesta -->
+      <div id="alerta" class="hidden p-4 rounded-xl text-sm font-semibold text-center"></div>
+
+    </form>
+  </div>
+
+  <!-- JavaScript Interno -->
+  <script>
+    // URL DEL WEBHOOK DE GOOGLE APPS SCRIPT (Remplazar con la tuya)
+    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyLEGNA9_r2mzTWWHdLb-DV_VKeGHVVEZ54DtuwQDPntllliTffdBTskW7lp61c4vdWRg/exec";
+
+    // 1. Cargar Consecutivo y Fecha Actual al iniciar
+    document.addEventListener("DOMContentLoaded", () => {
+      const ahora = new Date();
+      document.getElementById('fechaRegistro').value = ahora.toLocaleString('es-CO', { 
+        day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' 
+      });
+
+      // Obtener el consecutivo desde Apps Script
+      fetch(WEBHOOK_URL)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.consecutivo) {
+            document.getElementById('consecutivo').value = data.consecutivo;
+          }
+        })
+        .catch(() => {
+          document.getElementById('consecutivo').value = "REC-0001";
+        });
+    });
+
+    // 2. Convertir Números a Letras en Español
+    document.getElementById('valorNumero').addEventListener('input', (e) => {
+      const num = parseInt(e.target.value);
+      if (!isNaN(num) && num > 0) {
+        document.getElementById('valorLetras').value = numeroALetras(num) + " PESOS M/CTE";
+      } else {
+        document.getElementById('valorLetras').value = "";
+      }
+    });
+
+    function numeroALetras(num) {
+      if (num === 0) return "CERO";
+      const unidades = ["", "UN", "DOS", "TRES", "CUATRO", "CINCO", "SEIS", "SIETE", "OCHO", "NUEVE"];
+      const decenas = ["", "DIEZ", "VEINTE", "TREINTA", "CUARENTA", "CINCUENTA", "SESENTA", "SETENTA", "OCHENTA", "NOVENTA"];
+      const especiales = ["DIEZ", "ONCE", "DOCE", "TRECE", "CATORCE", "QUINCE", "DIECISEIS", "DIECISIETE", "DIECIOCHO", "DIECINUEVE"];
+      const cientos = ["", "CIEN", "DOSCIENTOS", "TRESCIENTOS", "CUATROCIENTOS", "QUINIENTOS", "SEISCIENTOS", "SETECIENTOS", "OCHOCIENTOS", "NOVECIENTOS"];
+
+      if (num < 10) return unidades[num];
+      if (num >= 10 && num < 20) return especiales[num - 10];
+      if (num >= 20 && num < 100) {
+        let u = num % 10;
+        return decenas[Math.floor(num / 10)] + (u > 0 ? " Y " + unidades[u] : "");
+      }
+      if (num >= 100 && num < 1000) {
+        if (num === 100) return "CIEN";
+        let rest = num % 100;
+        return (num > 100 && num < 200 ? "CIENTO" : cientos[Math.floor(num / 100)]) + (rest > 0 ? " " + numeroALetras(rest) : "");
+      }
+      if (num >= 1000 && num < 1000000) {
+        let miles = Math.floor(num / 1000);
+        let resto = num % 1000;
+        let strMiles = miles === 1 ? "MIL" : numeroALetras(miles) + " MIL";
+        return strMiles + (resto > 0 ? " " + numeroALetras(resto) : "");
+      }
+      if (num >= 1000000 && num < 1000000000) {
+        let millones = Math.floor(num / 1000000);
+        let resto = num % 1000000;
+        let strMillones = millones === 1 ? "UN MILLON" : numeroALetras(millones) + " MILLONES";
+        return strMillones + (resto > 0 ? " " + numeroALetras(resto) : "");
+      }
+      return num.toString();
+    }
+
+    // 3. Envío y Validación del Formulario
+    document.getElementById('formRecibo').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const correo = document.getElementById('correo').value.trim();
+      const celular = document.getElementById('celular').value.replace(/\D/g, '');
+      const errCorreo = document.getElementById('errCorreo');
+      const errCelular = document.getElementById('errCelular');
+
+      // Validador de Correo
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      let valido = true;
+
+      if (!emailRegex.test(correo)) {
+        errCorreo.classList.remove('hidden');
+        valido = false;
+      } else {
+        errCorreo.classList.add('hidden');
+      }
+
+      // Validador de Celular (Mínimo 10 dígitos)
+      if (celular.length < 10) {
+        errCelular.classList.remove('hidden');
+        valido = false;
+      } else {
+        errCelular.classList.add('hidden');
+      }
+
+      if (!valido) return;
+
+      const btn = document.getElementById('btnSubmit');
+      const alerta = document.getElementById('alerta');
+
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span> Guardando registro...</span>`;
+
+      // Convertir archivo adjunto a Base64
+      const fileInput = document.getElementById('soporte');
+      let soporteBase64 = "";
+      let soporteNombre = "";
+
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        soporteNombre = file.name;
+        soporteBase64 = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(file);
+        });
+      }
+
+      const payload = {
+        consecutivo: document.getElementById('consecutivo').value,
+        fechaRegistro: document.getElementById('fechaRegistro').value,
+        pagador: document.getElementById('pagador').value.trim(),
+        documento: document.getElementById('documento').value.trim(),
+        correo: correo,
+        celular: celular,
+        valorNumero: document.getElementById('valorNumero').value,
+        valorLetras: document.getElementById('valorLetras').value,
+        concepto: document.getElementById('concepto').value.trim(),
+        soporteBase64: soporteBase64,
+        soporteNombre: soporteNombre
+      };
+
+      try {
+        const response = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+          alerta.className = "p-4 rounded-xl text-sm font-semibold text-center bg-emerald-100 text-emerald-800 border border-emerald-300";
+          alerta.innerHTML = `<i class="fa-solid fa-circle-check me-2"></i>¡Recibo <strong>${result.consecutivo}</strong> registrado correctamente! Quedó en estado PENDIENTE.`;
+          alerta.classList.remove('hidden');
+          document.getElementById('formRecibo').reset();
+
+          // Actualizar fecha y nuevo consecutivo
+          document.getElementById('fechaRegistro').value = new Date().toLocaleString('es-CO');
+          fetch(WEBHOOK_URL)
+            .then(res => res.json())
+            .then(data => { if (data.consecutivo) document.getElementById('consecutivo').value = data.consecutivo; });
+
+        } else {
+          throw new Error(result.message);
+        }
+      } catch (err) {
+        alerta.className = "p-4 rounded-xl text-sm font-semibold text-center bg-red-100 text-red-800 border border-red-300";
+        alerta.innerHTML = `<i class="fa-solid fa-triangle-exclamation me-2"></i>Error al guardar: ${err.message}`;
+        alerta.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i><span> Registrar Recibo de Caja</span>`;
+      }
+    });
+  </script>
+</body>
+</html>
